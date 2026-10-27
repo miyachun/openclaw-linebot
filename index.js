@@ -128,7 +128,34 @@ const { stdout, stderr } = await execFileAsync(
 
 
 
+async function checkOpenClawGateway() {
+  try {
+    const path = require("node:path");
 
+    const openclawScript = path.join(
+      process.cwd(),
+      "node_modules",
+      "openclaw",
+      "openclaw.mjs"
+    );
+
+    const { stdout, stderr } = await execFileAsync(
+      process.execPath,
+      [openclawScript, "gateway", "status"],
+      {
+        timeout: 15000,
+        maxBuffer: 1024 * 1024,
+      }
+    );
+
+    console.log("Gateway status:", stdout);
+    if (stderr) console.error("Gateway status stderr:", stderr);
+  } catch (err) {
+    console.error("Gateway 狀態檢查失敗：", err.message);
+  }
+}
+
+checkOpenClawGateway();
 
 
 app.listen(process.env.PORT || 3000, () => {
