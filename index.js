@@ -58,19 +58,27 @@ app.post("/webhook", line.middleware(config), async (req, res) => {
 
 
 
+
 async function askOpenClaw(userId, message) {
   const sessionKey =
     `${process.env.OPENCLAW_SESSION_PREFIX || "line"}-${userId}`;
 
   const path = require("node:path");
+  const fs = require("node:fs");
 
-  const openclawScript = path.join(
-    process.env.APPDATA,
-    "npm",
-    "node_modules",
-    "openclaw",
-    "openclaw.mjs"
-  );
+  const openclawScript = process.env.OPENCLAW_SCRIPT_PATH;
+
+  if (!openclawScript) {
+    throw new Error(
+      "尚未設定 OPENCLAW_SCRIPT_PATH，請設定 OpenClaw 的實際安裝路徑"
+    );
+  }
+
+  if (!fs.existsSync(openclawScript)) {
+    throw new Error(
+      `找不到 OpenClaw 執行檔：${openclawScript}`
+    );
+  }
 
   const { stdout, stderr } = await execFileAsync(
     process.execPath,
@@ -94,6 +102,7 @@ async function askOpenClaw(userId, message) {
 
   return stdout.trim() || "目前無法產生回覆，請稍後再試。";
 }
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("LINE Bot started");
