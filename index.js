@@ -64,13 +64,7 @@ async function askOpenClaw(userId, message) {
   const path = require("node:path");
   const fs = require("node:fs");
 
-  const { stdout: npmRootOutput } = await execFileAsync(
-    "npm",
-    ["root", "-g"],
-    { timeout: 10000 }
-  );
 
-  const globalRoot = npmRootOutput.trim();
  const packageDir = require("node:path").join(
   process.cwd(),
   "node_modules",
