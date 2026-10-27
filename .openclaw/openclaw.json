@@ -1,8 +1,0 @@
-{
-  "gateway": {
-    "auth": {
-      "mode": "token",
-      "token": "${OPENCLAW_GATEWAY_TOKEN}"
-    }
-  }
-}
