@@ -71,7 +71,11 @@ async function askOpenClaw(userId, message) {
   );
 
   const globalRoot = npmRootOutput.trim();
-  const packageDir = "/opt/render/.npm-global/lib/node_modules/openclaw";
+ const packageDir = require("node:path").join(
+  process.cwd(),
+  "node_modules",
+  "openclaw"
+);
   const packageJsonPath = path.join(packageDir, "package.json");
 
   if (!fs.existsSync(packageJsonPath)) {
