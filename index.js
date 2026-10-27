@@ -151,7 +151,11 @@ async function checkOpenClawGateway() {
     console.log("Gateway status:", stdout);
     if (stderr) console.error("Gateway status stderr:", stderr);
   } catch (err) {
-    console.error("Gateway 狀態檢查失敗：", err.message);
+  console.error("Gateway 狀態檢查失敗");
+  console.error("錯誤訊息：", err.message);
+  console.error("退出代碼：", err.code);
+  console.error("stdout：", err.stdout || "");
+  console.error("stderr：", err.stderr || "");
   }
 }
 
