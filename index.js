@@ -115,12 +115,11 @@ if (!gatewayToken) {
 const { stdout, stderr } = await execFileAsync(
   process.execPath,
   [
-    openclawScript,
-    "agent",
-    "--agent", "main",
-    "--session-key", sessionKey,
-    "--message", message,
-    "--token", gatewayToken,
+  openclawScript,
+  "agent",
+  "--agent", "main",
+  "--session-key", sessionKey,
+  "--message", message,
   ],
   {
     timeout: 90000,
