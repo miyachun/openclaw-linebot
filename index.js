@@ -66,13 +66,14 @@ async function askOpenClaw(userId, message) {
   const path = require("node:path");
   const fs = require("node:fs");
 
-  const openclawScript = process.env.OPENCLAW_SCRIPT_PATH;
 
-  if (!openclawScript) {
-    throw new Error(
-      "尚未設定 OPENCLAW_SCRIPT_PATH，請設定 OpenClaw 的實際安裝路徑"
-    );
-  }
+const openclawScript =
+  process.env.OPENCLAW_SCRIPT_PATH ||
+  "/opt/render/.npm-global/lib/node_modules/openclaw/openclaw.mjs";
+
+if (!fs.existsSync(openclawScript)) {
+  throw new Error(`找不到 OpenClaw 執行檔：${openclawScript}`);
+}
 
   if (!fs.existsSync(openclawScript)) {
     throw new Error(
