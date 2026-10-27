@@ -106,20 +106,27 @@ async function askOpenClaw(userId, message) {
 
   console.log("OpenClaw CLI:", openclawScript);
 
-  const { stdout, stderr } = await execFileAsync(
-    process.execPath,
-    [
-      openclawScript,
-      "agent",
-      "--agent", "main",
-      "--session-key", sessionKey,
-      "--message", message,
-    ],
-    {
-      timeout: 90000,
-      maxBuffer: 1024 * 1024,
-    }
-  );
+const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
+
+if (!gatewayToken) {
+  throw new Error("尚未設定 OPENCLAW_GATEWAY_TOKEN");
+}
+
+const { stdout, stderr } = await execFileAsync(
+  process.execPath,
+  [
+    openclawScript,
+    "agent",
+    "--agent", "main",
+    "--session-key", sessionKey,
+    "--message", message,
+    "--token", gatewayToken,
+  ],
+  {
+    timeout: 90000,
+    maxBuffer: 1024 * 1024,
+  }
+);
 
   if (stderr) console.error("OpenClaw stderr:", stderr);
 
